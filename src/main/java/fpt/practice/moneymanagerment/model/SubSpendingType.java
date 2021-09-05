@@ -7,13 +7,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "sub_spending_type")
-public class SubSpendingType {
+@Entity
+@Table(name = "sub_spending_type")
+public class SubSpendingType implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
