@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class SpendingServiceImpl implements SpendingService {
@@ -47,24 +48,28 @@ public class SpendingServiceImpl implements SpendingService {
     @Override
     public void addSpending(SpendingRequest spendingRequest) {
         Spending spending = new Spending();
-        try {
-            Account account = accountRepository.getById(spendingRequest.getAccountId());
-            spending.setAccount(account);
-        }catch (Exception e){
+//        try {
+//            Account account = accountRepository.getById(spendingRequest.getAccountId());
+//            spending.setAccount(account);
+//        }catch (Exception e){
+//            throw new RestApiException(StatusCode.ACCOUNT_NOT_EXIST);
+//        }
+        Optional<Account> account = accountRepository.findById(spendingRequest.getAccountId());
+        if (!account.isPresent()) {
             throw new RestApiException(StatusCode.ACCOUNT_NOT_EXIST);
         }
-
+        spending.setAccount(account.get());
         try {
             SubSpendingType subSpendingType = subSpendingTypeRepository.getById(spendingRequest.getSubSpendingTypeId());
             spending.setSubSpendingType(subSpendingType);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RestApiException(StatusCode.SUB_SPENDING_TYPE_NOT_EXIST);
         }
 
         try {
             Unit unit = unitRepository.getById(spendingRequest.getUnitId());
             spending.setUnit(unit);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RestApiException(StatusCode.UNIT_NOT_EXIST);
         }
         spending.setAmount(spendingRequest.getAmount());
@@ -78,28 +83,28 @@ public class SpendingServiceImpl implements SpendingService {
         Spending spending = null;
         try {
             spending = spendingRepository.getById(spendingId);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RestApiException(StatusCode.SPENDING_NOT_EXIST);
         }
 
         try {
             Account account = accountRepository.getById(spendingRequest.getAccountId());
             spending.setAccount(account);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RestApiException(StatusCode.ACCOUNT_NOT_EXIST);
         }
 
         try {
             SubSpendingType subSpendingType = subSpendingTypeRepository.getById(spendingRequest.getSubSpendingTypeId());
             spending.setSubSpendingType(subSpendingType);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RestApiException(StatusCode.SUB_SPENDING_TYPE_NOT_EXIST);
         }
 
         try {
             Unit unit = unitRepository.getById(spendingRequest.getUnitId());
             spending.setUnit(unit);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RestApiException(StatusCode.UNIT_NOT_EXIST);
         }
         spending.setAmount(spendingRequest.getAmount());
@@ -112,7 +117,7 @@ public class SpendingServiceImpl implements SpendingService {
         Spending spending = null;
         try {
             spending = spendingRepository.getById(spendingId);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RestApiException(StatusCode.SPENDING_NOT_EXIST);
         }
         spendingRepository.delete(spending);

@@ -12,7 +12,14 @@ public enum StatusCode {
     SPENDING_TYPE_NOT_EXIST(402, PropertiesReader.getProperty(PropertyKeys.SPENDING_TYPE_NOT_EXIST)),
     SUB_SPENDING_TYPE_NOT_EXIST(403, PropertiesReader.getProperty(PropertyKeys.SUB_SPENDING_TYPE_NOT_EXIST)),
     UNIT_NOT_EXIST(405, PropertiesReader.getProperty(PropertyKeys.UNIT_NOT_EXIST)),
-    SPENDING_NOT_EXIST(406, PropertiesReader.getProperty(PropertyKeys.SPENDING_NOT_EXIST));
+    SPENDING_NOT_EXIST(406, PropertiesReader.getProperty(PropertyKeys.SPENDING_NOT_EXIST)),
+    LOGIN_FAILED(407, PropertiesReader.getProperty(PropertyKeys.LOGIN_FAILED)),
+    USERNAME_EMPTY(408, PropertiesReader.getProperty(PropertyKeys.USERNAME_EMPTY)),
+    PASSWORD_EMPTY(409, PropertiesReader.getProperty(PropertyKeys.PASSWORD_EMPTY)),
+    PASSWORD_WRONG_FORMAT(410, PropertiesReader.getProperty(PropertyKeys.PASSWORD_WRONG_FORMAT)),
+    EMAIL_WRONG_FORMAT(411, PropertiesReader.getProperty(PropertyKeys.EMAIL_WRONG_FORMAT)),
+    EMAIL_EMPTY(412, PropertiesReader.getProperty(PropertyKeys.EMAIL_EMPTY)),
+    USERNAME_EXISTED(413, PropertiesReader.getProperty(PropertyKeys.USERNAME_EXISTED));
 
     private Integer status;
 

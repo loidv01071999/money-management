@@ -31,6 +31,10 @@ public class Account implements Serializable {
     @NotNull
     private String password;
 
+    @Column(name = "email")
+    @NotNull
+    private String email;
+
     @Column(name = "beginning_balance")
     private Double beginningBalance;
 
