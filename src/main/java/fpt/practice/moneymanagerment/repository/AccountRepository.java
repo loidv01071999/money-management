@@ -8,9 +8,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AccountRepository extends JpaRepository<Account, Long> {
 
-//    @Query("SELECT ac FROM Account ac where ac.username=?1 AND ac.password=?2")
-//    Account getAccountByUsernameAndPassword(String username, String password);
     Account findAccountByUsernameAndPassword(String username, String password);
 
     Account findAccountByUsername(String username);
+
+    Account findAccountByEmail(String email);
+
+    Account findAccountByUsernameAndStatus(String username, String status);
 }

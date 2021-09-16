@@ -1,7 +1,10 @@
 package fpt.practice.moneymanagerment.controller;
 
 import fpt.practice.moneymanagerment.dto.SpendingDTO;
+import fpt.practice.moneymanagerment.exception.BadRequestException;
 import fpt.practice.moneymanagerment.request.SpendingRequest;
+import fpt.practice.moneymanagerment.response.Response;
+import fpt.practice.moneymanagerment.response.ResponseMessage;
 import fpt.practice.moneymanagerment.service.SpendingService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,27 +41,25 @@ public class SpendingController {
     }
 
     @PostMapping("/spendings")
-    public ResponseEntity<?> addSpending(@RequestBody SpendingRequest spendingRequest) {
+    public Response addSpending(@RequestBody SpendingRequest spendingRequest) throws BadRequestException {
         logger.debug("crate a spending: " + spendingRequest);
         spendingService.addSpending(spendingRequest);
-        ResponseEntity<String> response = new ResponseEntity<>("Add successful", HttpStatus.CREATED);
-        return response;
+        return new Response(ResponseMessage.CreateStoreSuccessfully);
+
     }
 
     @PutMapping("/spendings/{id}")
-    public ResponseEntity<?> updateSpending(@PathVariable("id") Long spendingId, @RequestBody SpendingRequest spendingRequest) {
+    public Response updateSpending(@PathVariable("id") Long spendingId, @RequestBody SpendingRequest spendingRequest) throws BadRequestException {
         logger.debug("update spending: " + spendingRequest);
         spendingService.updateSpending(spendingId, spendingRequest);
-        ResponseEntity<String> response = new ResponseEntity<>("Update success", HttpStatus.OK);
-        return response;
+        return new Response(ResponseMessage.UpdateStoreSuccessfully);
     }
 
     @DeleteMapping("/spendings/{id}")
-    public ResponseEntity<?> removeSpending(@PathVariable("id") Long spendingId) {
+    public Response removeSpending(@PathVariable("id") Long spendingId) throws BadRequestException {
         logger.debug("delete spending: " + spendingId);
         spendingService.removeSpending(spendingId);
-        ResponseEntity<String> response = new ResponseEntity<>("Delete success", HttpStatus.OK);
-        return response;
+        return new Response(ResponseMessage.DeleteStoreSuccessfully);
     }
 
 

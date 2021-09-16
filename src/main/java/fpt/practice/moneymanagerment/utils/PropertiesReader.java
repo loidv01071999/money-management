@@ -1,4 +1,4 @@
-package fpt.practice.moneymanagerment.util;
+package fpt.practice.moneymanagerment.utils;
 
 import fpt.practice.moneymanagerment.constant.Constants;
 import org.apache.log4j.Logger;

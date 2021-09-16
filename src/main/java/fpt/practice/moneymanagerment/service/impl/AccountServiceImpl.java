@@ -1,14 +1,18 @@
 package fpt.practice.moneymanagerment.service.impl;
 
-import fpt.practice.moneymanagerment.constant.StatusCode;
-import fpt.practice.moneymanagerment.exception.RestApiException;
+import fpt.practice.moneymanagerment.constant.Constants;
+import fpt.practice.moneymanagerment.exception.BadRequestException;
+import fpt.practice.moneymanagerment.exception.DataDuplicatedException;
 import fpt.practice.moneymanagerment.model.Account;
 import fpt.practice.moneymanagerment.repository.AccountRepository;
 import fpt.practice.moneymanagerment.request.RegisterRequest;
+import fpt.practice.moneymanagerment.response.ResponseMessage;
 import fpt.practice.moneymanagerment.service.AccountService;
-import fpt.practice.moneymanagerment.util.ValidateUtil;
+import fpt.practice.moneymanagerment.utils.ValidateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
 
@@ -18,52 +22,35 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     private AccountRepository accountRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
-    public void registerAccount(RegisterRequest registerRequest) {
+    @Transactional(rollbackFor = Exception.class)
+    public void registerAccount(RegisterRequest registerRequest) throws DataDuplicatedException, BadRequestException {
         registerRequest = deletePlace(registerRequest);
-        if (registerRequest.getUsername().isEmpty()){
-            throw new RestApiException(StatusCode.USERNAME_EMPTY);
+        if (!ValidateUtil.isPassword(registerRequest.getPassword())) {
+            throw new BadRequestException(ResponseMessage.PasswordWrongFormat);
         }
-        if(registerRequest.getPassword().isEmpty()){
-            throw new RestApiException(StatusCode.PASSWORD_EMPTY);
-        }
-        if(registerRequest.getEmail().isEmpty()){
-            throw new RestApiException(StatusCode.EMAIL_EMPTY);
-        }
-        if(!ValidateUtil.isPassword(registerRequest.getPassword())){
-            throw new RestApiException(StatusCode.PASSWORD_WRONG_FORMAT);
-        }
-        if(!ValidateUtil.isEmail(registerRequest.getEmail())){
-            throw new RestApiException(StatusCode.EMAIL_WRONG_FORMAT);
+        if (!ValidateUtil.isEmail(registerRequest.getEmail())) {
+            throw new BadRequestException(ResponseMessage.EmailWrongFormat);
         }
         Account account = accountRepository.findAccountByUsername(registerRequest.getUsername());
-        if(!Objects.isNull(account)){
-            throw new RestApiException(StatusCode.USERNAME_EXISTED);
+        if (!Objects.isNull(account)) {
+            throw new DataDuplicatedException();
         }
         Account accountRegister = new Account();
         accountRegister.setUsername(registerRequest.getUsername());
-        accountRegister.setPassword(registerRequest.getPassword());
+        accountRegister.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         accountRegister.setEmail(registerRequest.getEmail());
         accountRegister.setBeginningBalance(registerRequest.getStartAmount());
+        accountRegister.setStatus(Constants.STATUS_ACTIVE);
+        accountRegister.setRole(Constants.ROLE_ADMIN);
         accountRepository.save(accountRegister);
     }
 
-    @Override
-    public Account login(String username, String password) {
-        if(username.trim().isEmpty()){
-            throw new RestApiException(StatusCode.USERNAME_EMPTY);
-        }
-        if(password.trim().isEmpty()){
-            throw new RestApiException(StatusCode.PASSWORD_EMPTY);
-        }
-        Account account = accountRepository.findAccountByUsernameAndPassword(username,password);
-        if(Objects.isNull(account)){
-            throw new RestApiException(StatusCode.LOGIN_FAILED);
-        }
-        return account;
-    }
 
-    private RegisterRequest deletePlace(RegisterRequest registerRequest){
+    private RegisterRequest deletePlace(RegisterRequest registerRequest) {
         RegisterRequest request = registerRequest.builder()
                 .username(registerRequest.getUsername().trim())
                 .password(registerRequest.getPassword().trim())
