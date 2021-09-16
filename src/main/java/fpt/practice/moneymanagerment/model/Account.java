@@ -40,4 +40,10 @@ public class Account implements Serializable {
 
     @Column(name = "ending_balance")
     private Double endingBalance;
+
+    @Column(name = "status")
+    private String status;
+
+    @Column(name = "role")
+    private String role;
 }

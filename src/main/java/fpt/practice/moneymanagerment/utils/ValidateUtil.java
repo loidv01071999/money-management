@@ -1,4 +1,4 @@
-package fpt.practice.moneymanagerment.util;
+package fpt.practice.moneymanagerment.utils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

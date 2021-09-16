@@ -1,11 +1,10 @@
 package fpt.practice.moneymanagerment.service;
 
-import fpt.practice.moneymanagerment.model.Account;
+import fpt.practice.moneymanagerment.exception.BadRequestException;
+import fpt.practice.moneymanagerment.exception.DataDuplicatedException;
 import fpt.practice.moneymanagerment.request.RegisterRequest;
 
 public interface AccountService {
 
-    void registerAccount(RegisterRequest registerRequest);
-
-    Account login(String username, String password);
+    void registerAccount(RegisterRequest registerRequest) throws DataDuplicatedException, BadRequestException;
 }
