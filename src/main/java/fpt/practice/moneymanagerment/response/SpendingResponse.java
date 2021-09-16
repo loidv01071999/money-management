@@ -1,15 +1,13 @@
-package fpt.practice.moneymanagerment.dto;
+package fpt.practice.moneymanagerment.response;
 
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
-
 @Builder
 @Setter
 @Getter
-public class SpendingDTO {
+public class SpendingResponse {
     private Long spendingId;
     private String spendingTypeName;
     private String subSpendingTypeName;

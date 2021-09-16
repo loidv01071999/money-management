@@ -1,6 +1,6 @@
 package fpt.practice.moneymanagerment.service.impl;
 
-import fpt.practice.moneymanagerment.dto.SpendingDTO;
+import fpt.practice.moneymanagerment.response.SpendingResponse;
 import fpt.practice.moneymanagerment.exception.BadRequestException;
 import fpt.practice.moneymanagerment.model.Account;
 import fpt.practice.moneymanagerment.model.Spending;
@@ -40,7 +40,7 @@ public class SpendingServiceImpl implements SpendingService {
     private static final DateUtil DATE_UTIL = new DateUtil();
 
     @Override
-    public List<SpendingDTO> getListSpendings() {
+    public List<SpendingResponse> getListSpendings() {
         return spendingDTOS(spendingRepository.findAll());
     }
 
@@ -79,22 +79,22 @@ public class SpendingServiceImpl implements SpendingService {
         spendingRepository.delete(spending);
     }
 
-    private List<SpendingDTO> spendingDTOS(List<Spending> spendings) {
-        List<SpendingDTO> listSpendingDTOs = new ArrayList<>();
+    private List<SpendingResponse> spendingDTOS(List<Spending> spendings) {
+        List<SpendingResponse> listSpendingResponses = new ArrayList<>();
         DateUtil dateUtil = new DateUtil();
         NumberUtil numberUtil = new NumberUtil();
         for (Spending spending :
                 spendings) {
-            SpendingDTO spendingDTO = SpendingDTO.builder().spendingId(spending.getId())
+            SpendingResponse spendingResponse = SpendingResponse.builder().spendingId(spending.getId())
                     .spendingDate(dateUtil.convertDate(spending.getDate()))
                     .spendingTypeName(spending.getSubSpendingType().getSpendingType().getName())
                     .subSpendingTypeName(spending.getSubSpendingType().getName())
                     .amount(numberUtil.convertAmount(spending.getAmount()))
                     .description(spending.getDescription())
                     .build();
-            listSpendingDTOs.add(spendingDTO);
+            listSpendingResponses.add(spendingResponse);
         }
-        return listSpendingDTOs;
+        return listSpendingResponses;
     }
 
     private Spending checkNotFound(SpendingRequest spendingRequest, Spending spending) throws BadRequestException{
