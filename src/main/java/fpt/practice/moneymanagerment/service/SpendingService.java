@@ -1,6 +1,6 @@
 package fpt.practice.moneymanagerment.service;
 
-import fpt.practice.moneymanagerment.dto.SpendingDTO;
+import fpt.practice.moneymanagerment.response.SpendingResponse;
 import fpt.practice.moneymanagerment.exception.BadRequestException;
 import fpt.practice.moneymanagerment.request.SpendingRequest;
 
@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface SpendingService {
 
-    List<SpendingDTO> getListSpendings();
+    List<SpendingResponse> getListSpendings();
 
     void addSpending(SpendingRequest spendingRequest) throws BadRequestException;
 

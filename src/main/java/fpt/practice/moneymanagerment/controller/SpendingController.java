@@ -1,6 +1,6 @@
 package fpt.practice.moneymanagerment.controller;
 
-import fpt.practice.moneymanagerment.dto.SpendingDTO;
+import fpt.practice.moneymanagerment.response.SpendingResponse;
 import fpt.practice.moneymanagerment.exception.BadRequestException;
 import fpt.practice.moneymanagerment.request.SpendingRequest;
 import fpt.practice.moneymanagerment.response.Response;
@@ -35,8 +35,8 @@ public class SpendingController {
     @GetMapping("/spendings")
     public ResponseEntity<?> getListSpendings() {
         logger.debug("get list spending request: ");
-        List<SpendingDTO> spendings = spendingService.getListSpendings();
-        ResponseEntity<List<SpendingDTO>> response = new ResponseEntity<>(spendings, HttpStatus.OK);
+        List<SpendingResponse> spendings = spendingService.getListSpendings();
+        ResponseEntity<List<SpendingResponse>> response = new ResponseEntity<>(spendings, HttpStatus.OK);
         return response;
     }
 
