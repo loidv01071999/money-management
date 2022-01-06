@@ -48,7 +48,7 @@ public class SpendingServiceImpl implements SpendingService {
     public void addSpending(SpendingRequest spendingRequest) throws BadRequestException {
         Spending spending = new Spending();
 
-        spending = checkNotFound(spendingRequest,spending);
+        spending = checkNotFound(spendingRequest, spending);
 
         spending.setAmount(spendingRequest.getAmount());
         spending.setDescription(spendingRequest.getDescription());
@@ -57,22 +57,22 @@ public class SpendingServiceImpl implements SpendingService {
     }
 
     @Override
-    public void updateSpending(Long spendingId, SpendingRequest spendingRequest) throws BadRequestException{
+    public void updateSpending(Long spendingId, SpendingRequest spendingRequest) throws BadRequestException {
         Optional<Spending> spendingOptional = spendingRepository.findById(spendingId);
-        if(!spendingOptional.isPresent()){
+        if (!spendingOptional.isPresent()) {
             throw new BadRequestException(ResponseMessage.SpendingIdNotFound);
         }
         Spending spending = spendingOptional.get();
-        spending = checkNotFound(spendingRequest,spending);
+        spending = checkNotFound(spendingRequest, spending);
         spending.setAmount(spendingRequest.getAmount());
         spending.setDescription(spendingRequest.getDescription());
         spendingRepository.save(spending);
     }
 
     @Override
-    public void removeSpending(Long spendingId) throws BadRequestException{
+    public void removeSpending(Long spendingId) throws BadRequestException {
         Optional<Spending> spendingOptional = spendingRepository.findById(spendingId);
-        if(!spendingOptional.isPresent()){
+        if (!spendingOptional.isPresent()) {
             throw new BadRequestException(ResponseMessage.SpendingIdNotFound);
         }
         Spending spending = spendingOptional.get();
@@ -97,7 +97,7 @@ public class SpendingServiceImpl implements SpendingService {
         return listSpendingResponses;
     }
 
-    private Spending checkNotFound(SpendingRequest spendingRequest, Spending spending) throws BadRequestException{
+    private Spending checkNotFound(SpendingRequest spendingRequest, Spending spending) throws BadRequestException {
         Optional<Account> account = accountRepository.findById(spendingRequest.getAccountId());
         if (!account.isPresent()) {
             throw new BadRequestException(ResponseMessage.AccountIdNotFound);
@@ -105,13 +105,13 @@ public class SpendingServiceImpl implements SpendingService {
         spending.setAccount(account.get());
         //check sub spending type
         Optional<SubSpendingType> subSpendingType = subSpendingTypeRepository.findById(spendingRequest.getSubSpendingTypeId());
-        if(!subSpendingType.isPresent()){
+        if (!subSpendingType.isPresent()) {
             throw new BadRequestException(ResponseMessage.SubTypeSpendingIdNotFound);
         }
         spending.setSubSpendingType(subSpendingType.get());
         //check unit
         Optional<Unit> unit = unitRepository.findById(spendingRequest.getUnitId());
-        if(!unit.isPresent()){
+        if (!unit.isPresent()) {
             throw new BadRequestException(ResponseMessage.UnitIdNotFound);
         }
         spending.setUnit(unit.get());
